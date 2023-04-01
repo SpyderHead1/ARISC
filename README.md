@@ -13,6 +13,8 @@ Side note - I know I could have used the kv design language but this is my first
 
 And I know, it could be better commented. If I have some spare time I add some more comments to the code ;)
 
+### Why version 3.x?
+Version 1.0 completely used only Tkinter for the GUI. But at some point I ran in some problems with it, so I had to switch the GUI framework. Version 2.0 then used Kivy as GUI framework. I switched the version from 2.0x to 3.00 mainly just because of a name change and to get the main version number even to the main version number of my dashboard.
 
 ![Alt text](/screenshots/ARISC_01.png?raw=true "Screenshot 01")
 
