@@ -10,3 +10,10 @@ The file ARIS configurator.py contains almost the complete code
 The file Custom.py contains some customized classes that might be useful in other projects as well
 
 Side note - I know I could have used the kv design languagse but this is my first python program and the very first time I got in touch with Kivy. So bear with me =)
+
+
+![Alt text](/screenshots/ARISC_01.png?raw=true "Screenshot 01")
+
+![Alt text](/screenshots/ARISC_02.png?raw=true "Screenshot 02")
+
+![Alt text](/screenshots/ARISC_03.png?raw=true "Screenshot 03")
