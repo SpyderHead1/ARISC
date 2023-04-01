@@ -12,7 +12,6 @@ The file Custom.py contains some customized classes that might be useful in othe
 Side note - I know I could have used the kv design language but this is my first python program and the very first time I got in touch with Kivy. So bear with me =)
 
 
-
 ![Alt text](/screenshots/ARISC_01.png?raw=true "Screenshot 01")
 
 ![Alt text](/screenshots/ARISC_02.png?raw=true "Screenshot 02")
