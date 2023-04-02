@@ -215,13 +215,13 @@ class ArisConfiguratorApp(App):
         #                                                                                        #
         ##########################################################################################
 
-        self.Page1_Button = Button( text = 'Design',
+        self.Page1_Button = Button( text = 'Look',
                                     height = MainButtonHeight / 1.4,
                                     width = 150,
                                     halign = 'center',
                                     size_hint = [None, None],
                                     markup = True,
-                                    background_color = (0.55, 0.55, 0.55, 1.0))
+                                    background_color = (0.55, 0.55, 0.95, 1.0))
         self.Page1_Button.bind(on_press = self.Page1ButtonClicked)
         self.LeftSidePageButtons_Layout.add_widget(self.Page1_Button)
 
@@ -399,6 +399,18 @@ class ArisConfiguratorApp(App):
                                                     height = MainConfigLayoutGridHeight,
                                                     width = MainConfigLayoutGridWidth,
                                                     size_hint = [None, None])
+
+        ##########################################################################################
+
+        self.ConfigPageDesign1_Layout.add_widget(self.MainBgColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.SeperatorColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.MainTextColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.TitleTextColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.GearTextColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.PersonalBestColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.TcColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.AbsColor_Layout)
+        self.ConfigPageDesign1_Layout.add_widget(self.SessionBestColor_Layout)
         
         ##########################################################################################
         #                                                                                        #
@@ -406,15 +418,15 @@ class ArisConfiguratorApp(App):
         #                                                                                        #
         ##########################################################################################
         
-        self.BorderRadius_Layout = GridLayout(  cols = 1,
-                                                padding = [0, -10],
+        self.BorderRadius_Layout = GridLayout(  cols = 2,
+                                                padding = [0, 0],
                                                 height = MainConfigLayoutGridHeight / 2,
                                                 width = (3 * MainConfigLayoutGridWidth) + (2 * MainGridPadding),
                                                 size_hint = [None, None])
 
         self.BorderRadiusSlider_Layout = GridLayout(    cols = 1,
                                                         height = MainConfigLayoutGridHeight / 2,
-                                                        width = (3 * MainConfigLayoutGridWidth),
+                                                        width = (2 * MainConfigLayoutGridWidth),
                                                         size_hint = [None, None])
         
         self.BorderRadiusDescription_Label = Label( text = 'Corner radius for borders: ' + str(self.Config.ActBorderRadius),
@@ -429,27 +441,57 @@ class ArisConfiguratorApp(App):
                                             max = 20,
                                             step = 1,
                                             height = MainConfigLayoutGridHeight / 2,
-                                            width =  (3 * MainConfigLayoutGridWidth) + (2 * MainGridPadding),
+                                            width =  (2 * MainConfigLayoutGridWidth) + (1 * MainGridPadding),
                                             size_hint = [None, None],
                                             value = self.Config.ActBorderRadius)
         self.BorderRadius_Slider.bind(value = self.BorderRadiusSliderChange)
+
+        ##########################################################################################
         
         self.BorderRadius_Layout.add_widget(self.BorderRadiusDescription_Label)
         self.BorderRadius_Layout.add_widget(self.BorderRadius_Slider)
 
+        self.ConfigPageDesign2_Layout.add_widget(self.BorderRadius_Layout)
+
+        ##########################################################################################
+        #                                                                                        #
+        # Background image                                                                       #
+        #                                                                                        #
+        ##########################################################################################
+        
+        self.BackgroundImageActive_Layout = GridLayout( cols = 3,
+                                                        padding = [-5, -20],
+                                                        height = MainConfigLayoutGridHeight / 2,
+                                                        width = (3 * MainConfigLayoutGridWidth) + (2 * MainGridPadding),
+                                                        size_hint = [None, None])
+        
+        self.BackgroundImageActive_ChkBox = CheckBox(   active = self.Config.ActBackgroundImageActive,
+                                                        width = 30,
+                                                        height = MainConfigLayoutGridHeight / 2,
+                                                        size_hint = [None, None])
+        self.BackgroundImageActive_ChkBox.bind(active = self.BackgroundImageActiveChkBoxActive)
+
+        self.BackgroundImageActive_Label = Custom.LabelButton(  text = 'Use background image',
+                                                                halign = 'left',
+                                                                valign = MainLabelValign,
+                                                                height = MainConfigLayoutGridHeight / 2,
+                                                                font_size = MainLabelTextSize,
+                                                                size_hint_x = 0.37,
+                                                                size_hint_y = None)
+        self.BackgroundImageActive_Label.bind(  size = self.BackgroundImageActive_Label.setter('text_size'),
+                                                on_release = self.BackgroundImageActiveLabelActive)
+
+        # put a spare widget behind the description, just to be sure that only the description label is clickable and not the whole line
+        self.BackgroundImageActiveSpare_ColoredCanvas = Custom.ColoredCanvas(   height = MainConfigLayoutGridHeight / 2,
+                                                                                size_hint_y = None)
+
         ##########################################################################################
 
-        self.ConfigPageDesign1_Layout.add_widget(self.MainBgColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.SeperatorColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.MainTextColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.TitleTextColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.GearTextColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.PersonalBestColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.TcColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.AbsColor_Layout)
-        self.ConfigPageDesign1_Layout.add_widget(self.SessionBestColor_Layout)
+        self.BackgroundImageActive_Layout.add_widget(self.BackgroundImageActive_ChkBox)
+        self.BackgroundImageActive_Layout.add_widget(self.BackgroundImageActive_Label)
+        self.BackgroundImageActive_Layout.add_widget(self.BackgroundImageActiveSpare_ColoredCanvas)
 
-        self.ConfigPageDesign2_Layout.add_widget(self.BorderRadius_Layout)
+        self.ConfigPageDesign2_Layout.add_widget(self.BackgroundImageActive_Layout)
 
         ##########################################################################################
         #                                                                                        #
@@ -906,46 +948,6 @@ class ArisConfiguratorApp(App):
         self.Drs_Layout.add_widget(self.DrsSpare_ColoredCanvas)
 
         self.ConfigPageFunctions1_Layout.add_widget(self.Drs_Layout)
-
-        ##########################################################################################
-        #                                                                                        #
-        # Background image                                                                       #
-        #                                                                                        #
-        ##########################################################################################
-        
-        self.BackgroundImageActive_Layout = GridLayout( cols = 3,
-                                                        padding = [0, 85],
-                                                        height = MainConfigLayoutGridHeight / 2,
-                                                        width = (3 * MainConfigLayoutGridWidth) + (2 * MainGridPadding),
-                                                        size_hint = [None, None])
-        
-        self.BackgroundImageActive_ChkBox = CheckBox(   active = self.Config.ActBackgroundImageActive,
-                                                        width = 30,
-                                                        height = MainConfigLayoutGridHeight / 2,
-                                                        size_hint = [None, None])
-        self.BackgroundImageActive_ChkBox.bind(active = self.BackgroundImageActiveChkBoxActive)
-
-        self.BackgroundImageActive_Label = Custom.LabelButton(  text = 'Use background image',
-                                                                halign = 'left',
-                                                                valign = MainLabelValign,
-                                                                height = MainConfigLayoutGridHeight / 2,
-                                                                font_size = MainLabelTextSize,
-                                                                size_hint_x = 0.37,
-                                                                size_hint_y = None)
-        self.BackgroundImageActive_Label.bind(  size = self.BackgroundImageActive_Label.setter('text_size'),
-                                                on_release = self.BackgroundImageActiveLabelActive)
-
-        # put a spare widget behind the description, just to be sure that only the description label is clickable and not the whole line
-        self.BackgroundImageActiveSpare_ColoredCanvas = Custom.ColoredCanvas(   height = MainConfigLayoutGridHeight / 2,
-                                                                                size_hint_y = None)
-
-        ##########################################################################################
-
-        self.BackgroundImageActive_Layout.add_widget(self.BackgroundImageActive_ChkBox)
-        self.BackgroundImageActive_Layout.add_widget(self.BackgroundImageActive_Label)
-        self.BackgroundImageActive_Layout.add_widget(self.BackgroundImageActiveSpare_ColoredCanvas)
-
-        self.ConfigPageFunctions1_Layout.add_widget(self.BackgroundImageActive_Layout)
 
         ##########################################################################################
         #                                                                                        #
@@ -2282,31 +2284,52 @@ class ArisConfiguratorApp(App):
         return self.Main_Layout
 
     def Page1ButtonClicked(self, *args):
+        # set actual page variable, clear all widgets on the left side and place widgets for selected page and highlight the button for the selected page
         self.Page = 1
         self.LeftSide_Layout.clear_widgets()
+        self.Page1_Button.background_color = (0.55, 0.55, 0.95, 1.0)
+        self.Page2_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page3_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page4_Button.background_color = (0.55, 0.55, 0.55, 1.0)
         self.LeftSide_Layout.add_widget(self.ConfigPageDesign1_Layout)
         self.LeftSide_Layout.add_widget(self.ConfigPageDesign2_Layout)
         Custom.DebugPrint(DebugMode, 'Page switched: ' + str(self.Page))
 
     def Page2ButtonClicked(self, *args):
+        # set actual page variable, clear all widgets on the left side and place widgets for selected page and highlight the button for the selected page
         self.Page = 2
         self.LeftSide_Layout.clear_widgets()
+        self.Page1_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page2_Button.background_color = (0.55, 0.55, 0.95, 1.0)
+        self.Page3_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page4_Button.background_color = (0.55, 0.55, 0.55, 1.0)
         self.LeftSide_Layout.add_widget(self.ConfigPageFunctions1_Layout)
         Custom.DebugPrint(DebugMode, 'Page switched: ' + str(self.Page))
 
     def Page3ButtonClicked(self, *args):
+        # set actual page variable, clear all widgets on the left side and place widgets for selected page and highlight the button for the selected page
         self.Page = 3
         self.LeftSide_Layout.clear_widgets()
+        self.Page1_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page2_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page3_Button.background_color = (0.55, 0.55, 0.95, 1.0)
+        self.Page4_Button.background_color = (0.55, 0.55, 0.55, 1.0)
         # not present at the moment: self.LeftSide_Layout.add_widget(self.ConfigPageFunctions2_Layout)
         Custom.DebugPrint(DebugMode, 'Page switched: ' + str(self.Page))
 
     def Page4ButtonClicked(self, *args):
+        # set actual page variable, clear all widgets on the left side and place widgets for selected page and highlight the button for the selected page
         self.Page = 4
         self.LeftSide_Layout.clear_widgets()
+        self.Page1_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page2_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page3_Button.background_color = (0.55, 0.55, 0.55, 1.0)
+        self.Page4_Button.background_color = (0.55, 0.55, 0.95, 1.0)
         # not present at the moment: self.LeftSide_Layout.add_widget(self.ConfigPageFunctions3_Layout)
         Custom.DebugPrint(DebugMode, 'Page switched: ' + str(self.Page))
 
     def LoadPreviewSchedules(self, *args):
+        # reset update counters and schedule preview update to be be done
         self.PreviewUpdateRpmCounter = 0
         self.PreviewUpdateBackgroundCounter = 0
         Clock.schedule_interval(self.UpdatePreviewBackground, 0.1)
