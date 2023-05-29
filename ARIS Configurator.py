@@ -33,7 +33,7 @@ from kivy.core.window import Window
 
 import Custom
 
-ARISConfigurator_version = '3.01'
+ARISConfigurator_version = '3.02'
 
 MainBgColor = '#202020FF' # RGBA color code
 MainLabelTextSize = 16
@@ -429,7 +429,7 @@ class ArisConfiguratorApp(App):
                                                         width = (2 * MainConfigLayoutGridWidth),
                                                         size_hint = [None, None])
         
-        self.BorderRadiusDescription_Label = Label( text = 'Corner radius for borders: ' + str(self.Config.ActBorderRadius),
+        self.BorderRadiusDescription_Label = Label( text = 'Corner radius main borders: ' + str(self.Config.ActBorderRadius),
                                                     halign = 'left',
                                                     valign = MainLabelValign,
                                                     height = MainConfigLayoutGridHeight / 2,
@@ -452,6 +452,48 @@ class ArisConfiguratorApp(App):
         self.BorderRadius_Layout.add_widget(self.BorderRadius_Slider)
 
         self.ConfigPageDesign2_Layout.add_widget(self.BorderRadius_Layout)
+        
+        ##########################################################################################
+        #                                                                                        #
+        # RPM Border radius slider                                                               #
+        #                                                                                        #
+        ##########################################################################################
+        
+        self.BorderRadiusRPM_Layout = GridLayout(   cols = 2,
+                                                    padding = [0, -8],
+                                                    height = MainConfigLayoutGridHeight / 2,
+                                                    width = (3 * MainConfigLayoutGridWidth) + (2 * MainGridPadding),
+                                                    size_hint = [None, None])
+
+        self.BorderRadiusRPMSlider_Layout = GridLayout( cols = 1,
+                                                        height = MainConfigLayoutGridHeight / 2,
+                                                        width = (2 * MainConfigLayoutGridWidth),
+                                                        size_hint = [None, None])
+        
+        self.BorderRadiusRPMDescription_Label = Label(  text = 'Corner radius RPM borders: ' + str(self.Config.ActBorderRadiusRPM),
+                                                        halign = 'left',
+                                                        valign = MainLabelValign,
+                                                        height = MainConfigLayoutGridHeight / 2,
+                                                        font_size = MainLabelTextSize,
+                                                        size_hint_y = None)
+        self.BorderRadiusRPMDescription_Label.bind(size = self.BorderRadiusRPMDescription_Label.setter('text_size'))
+        
+        self.BorderRadiusRPM_Slider = Slider(   min = 0,
+                                                max = 20,
+                                                step = 1,
+                                                height = MainConfigLayoutGridHeight / 2,
+                                                width =  (2 * MainConfigLayoutGridWidth) + (1 * MainGridPadding),
+                                                size_hint = [None, None],
+                                                value = self.Config.ActBorderRadiusRPM)
+        self.BorderRadiusRPM_Slider.bind(value = self.BorderRadiusRPMSliderChange)
+
+        ##########################################################################################
+        
+        self.BorderRadiusRPM_Layout.add_widget(self.BorderRadiusRPMDescription_Label)
+        self.BorderRadiusRPM_Layout.add_widget(self.BorderRadiusRPM_Slider)
+
+        if (self.Config.ActRpmType == 'angular elements'):
+            self.ConfigPageDesign2_Layout.add_widget(self.BorderRadiusRPM_Layout)
 
         ##########################################################################################
         #                                                                                        #
@@ -2343,83 +2385,83 @@ class ArisConfiguratorApp(App):
 
     def LoadGraphics(self, *args):
         self.PreviewBackground_ColoredCanvas.DrawRectangle( Color=get_color_from_hex(self.Config.ActBgColor['Color']))
-        self.PreviewRpmBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewRpmBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelLeftBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelLeftBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelPerLapBorder_ColoredCanvas.DrawRectangle(   Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelPerLapBorder_ColoredCanvas.DrawRectangle(   Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelRequiredBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelRequiredBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewActualStintBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewActualStintBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewGearBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewGearBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewSpeedBorder_ColoredCanvas.DrawRectangle(    Radius = self.Config.ActBorderRadius,
+        self.PreviewSpeedBorder_ColoredCanvas.DrawRectangle(    Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewPositionBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewPositionBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewGapBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewGapBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewOilBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewOilBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = self.Config.ActBorderRadius,
+        self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewWaterBorder_ColoredCanvas.DrawRectangle(    Radius = self.Config.ActBorderRadius,
+        self.PreviewWaterBorder_ColoredCanvas.DrawRectangle(    Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTyreWearBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewTyreWearBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTimeBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewTimeBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTyreTempBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewTyreTempBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTyrePressBorder_ColoredCanvas.DrawRectangle(    Radius = self.Config.ActBorderRadius,
+        self.PreviewTyrePressBorder_ColoredCanvas.DrawRectangle(    Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
@@ -2861,16 +2903,16 @@ class ArisConfiguratorApp(App):
             self.PreviewUpdateRpmCounter = 0
 
         if (self.Config.ActRpmType == 'angular elements'):
-            self.PreviewRpm1_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor1), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm2_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor2), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm3_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor3), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm4_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor4), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm5_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor5), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm6_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor6), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm7_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor7), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm8_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor8), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm9_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor9), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewRpm10_ColoredCanvas.DrawRectangle(Color=get_color_from_hex(self.PreviewRpmColor10), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm1_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor1), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm2_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor2), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm3_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor3), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm4_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor4), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm5_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor5), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm6_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor6), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm7_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor7), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm8_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor8), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm9_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor9), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
+            self.PreviewRpm10_ColoredCanvas.DrawRectangle(Radius = (self.Config.ActBorderRadiusRPM / 100) * PreviewSize, Color=get_color_from_hex(self.PreviewRpmColor10), BorderWidth = 1, BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
 
             self.PreviewRpmLinearGauge_Label.DrawRectangle(Color=get_color_from_hex('#00000000'))
         elif (self.Config.ActRpmType == 'round elements'):
@@ -2961,83 +3003,83 @@ class ArisConfiguratorApp(App):
 
 
 
-        self.PreviewRpmBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewRpmBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelLeftBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelLeftBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelPerLapBorder_ColoredCanvas.DrawRectangle(   Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelPerLapBorder_ColoredCanvas.DrawRectangle(   Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewFuelRequiredBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewFuelRequiredBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewActualStintBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewActualStintBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewGearBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewGearBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewSpeedBorder_ColoredCanvas.DrawRectangle(    Radius = self.Config.ActBorderRadius,
+        self.PreviewSpeedBorder_ColoredCanvas.DrawRectangle(    Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewPositionBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewPositionBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewGapBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewGapBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewOilBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewOilBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = self.Config.ActBorderRadius,
+        self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewWaterBorder_ColoredCanvas.DrawRectangle(    Radius = self.Config.ActBorderRadius,
+        self.PreviewWaterBorder_ColoredCanvas.DrawRectangle(    Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+        self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTyreWearBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewTyreWearBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTimeBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewTimeBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                             Color=get_color_from_hex('#00000000'),
                                                             BorderWidth = 1,
                                                             BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTyreTempBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+        self.PreviewTyreTempBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-        self.PreviewTyrePressBorder_ColoredCanvas.DrawRectangle(    Radius = self.Config.ActBorderRadius,
+        self.PreviewTyrePressBorder_ColoredCanvas.DrawRectangle(    Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex('#00000000'),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
@@ -3090,20 +3132,20 @@ class ArisConfiguratorApp(App):
         self.PreviewUpdateLapDeltaCounter += 1
         
         if self.PreviewShowPersonalBest:
-            self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+            self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex(self.Config.ActPersonalBestColor['Color']),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+            self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex(self.Config.ActPersonalBestColor['Color']),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
         elif self.PreviewShowSessionBest:
-            self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = self.Config.ActBorderRadius,
+            self.PreviewLapDeltaBorder_ColoredCanvas.DrawRectangle( Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex(self.Config.ActSessionBestColor['Color']),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
-            self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+            self.PreviewLapTimeBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                     Color=get_color_from_hex(self.Config.ActSessionBestColor['Color']),
                                                                     BorderWidth = 1,
                                                                     BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
@@ -3118,12 +3160,12 @@ class ArisConfiguratorApp(App):
         self.PreviewUpdateTcCounter += 1
         if not self.PreviewShowTc:
             self.PreviewUpdateTcCounter = 0
-            self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = self.Config.ActBorderRadius,
+            self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
         elif  ((int((random.random()) * 1000) % 2) == 0):
-            self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = self.Config.ActBorderRadius,
+            self.PreviewTcBorder_ColoredCanvas.DrawRectangle(   Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex(self.Config.ActTcColor['Color']),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
@@ -3136,12 +3178,12 @@ class ArisConfiguratorApp(App):
         self.PreviewUpdateAbsCounter += 1
         if not self.PreviewShowAbs:
             self.PreviewUpdateAbsCounter = 0
-            self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+            self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex('#00000000'),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
         elif  ((int((random.random()) * 1000) % 2) == 0):
-            self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = self.Config.ActBorderRadius,
+            self.PreviewAbsBorder_ColoredCanvas.DrawRectangle(  Radius = (self.Config.ActBorderRadius / 100) * PreviewSize,
                                                                 Color=get_color_from_hex(self.Config.ActAbsColor['Color']),
                                                                 BorderWidth = 1,
                                                                 BorderColor = get_color_from_hex(self.Config.ActSepColor['Color']))
@@ -3417,12 +3459,16 @@ class ArisConfiguratorApp(App):
 
         self.RpmDirection_Layout.clear_widgets()
         self.RpmDirection_Layout.add_widget(self.RpmDirection_Label)
+        self.ConfigPageDesign2_Layout.clear_widgets()
+        self.ConfigPageDesign2_Layout.add_widget(self.BorderRadius_Layout)
         
         if ((self.Config.ActRpmType == 'angular elements') or (self.Config.ActRpmType == 'round elements')):
             self.ActRpmDirectionElements = ['outer to inner', 'left to right']
             self.RpmDirection_Layout.add_widget(self.RpmDefaultDirection_Spinner)
             self.RpmDefaultDirection_Spinner.bind(text = self.RpmDirectionDropdownClicked)
             self.Config.ActRpmDirection = self.RpmDefaultDirection_Spinner.text.replace('\n', ' ')
+            if (self.Config.ActRpmType == 'angular elements'):
+                self.ConfigPageDesign2_Layout.add_widget(self.BorderRadiusRPM_Layout)
         else:
             self.ActRpmDirectionElements = ['inner to outer', 'left to right']
             self.RpmDirection_Layout.add_widget(self.RpmGaugeDirection_Spinner)
@@ -3481,8 +3527,14 @@ class ArisConfiguratorApp(App):
     def BorderRadiusSliderChange(self, instance, value):
         # when slider is changed take the actual slider value and copy it to the confg value
         self.Config.ActBorderRadius = value
-        self.BorderRadiusDescription_Label.text = 'Corner radius for borders: ' + str(int(self.Config.ActBorderRadius))
+        self.BorderRadiusDescription_Label.text = 'Corner radius main borders: ' + str(int(self.Config.ActBorderRadius))
         Custom.DebugPrint(DebugMode, 'Border radius: ' + str(self.Config.ActBorderRadius))
+
+    def BorderRadiusRPMSliderChange(self, instance, value):
+        # when slider is changed take the actual slider value and copy it to the confg value
+        self.Config.ActBorderRadiusRPM = value
+        self.BorderRadiusRPMDescription_Label.text = 'Corner radius RPM borders: ' + str(int(self.Config.ActBorderRadiusRPM))
+        Custom.DebugPrint(DebugMode, 'RPM border radius: ' + str(self.Config.ActBorderRadiusRPM))
     
     def FasterCarBehindChkBoxActive(self, instance, value):
             
@@ -3742,6 +3794,10 @@ class ArisConfiguratorApp(App):
         if (float(self.Config.BorderRadius) != self.Config.ActBorderRadius):
             self.UnsavedChanges = True
             Custom.DebugPrint(DebugMode, 'Border radius not saved')
+
+        if (float(self.Config.BorderRadiusRPM) != self.Config.ActBorderRadiusRPM):
+            self.UnsavedChanges = True
+            Custom.DebugPrint(DebugMode, 'RPM border radius not saved')
 
         if (float(self.Config.WelcomeMsgDuration) != self.Config.ActWelcomeMsgDuration):
             self.UnsavedChanges = True
@@ -4362,6 +4418,7 @@ class ArisConfiguratorApp(App):
         # garbage collect
         self.RpmDirection_Layout.clear_widgets()
         self.BorderRadius_Layout.clear_widgets()
+        self.BorderRadiusRPM_Layout.clear_widgets()
         self.WelcomeMsg1_Layout.clear_widgets()
         if not self.WelcomeMsg_ChkBox.active:
             self.WelcomeMsg2_Layout.clear_widgets()
@@ -4395,6 +4452,12 @@ class ArisConfiguratorApp(App):
 
         self.BorderRadius_Layout.add_widget(self.BorderRadiusDescription_Label)
         self.BorderRadius_Layout.add_widget(self.BorderRadius_Slider)
+
+        # rebuild RPM border radius
+        self.BorderRadiusRPM_Slider.value = self.Config.ActBorderRadiusRPM
+
+        self.BorderRadiusRPM_Layout.add_widget(self.BorderRadiusRPMDescription_Label)
+        self.BorderRadiusRPM_Layout.add_widget(self.BorderRadiusRPM_Slider)
 
         # rebuild welcome message
         self.WelcomeMsg1_Layout.add_widget(self.WelcomeMsg_ChkBox)
@@ -4668,6 +4731,7 @@ class ConfigFile:
     DefaultBackgroundImageActive = False
     DefaultShowRefillRequired = True
     DefaultBorderRadius = 4
+    DefaultBorderRadiusRPM = 4
 
     # init values
     RpmType = 'not loaded'
@@ -4693,6 +4757,7 @@ class ConfigFile:
     BackgroundImageActive = '0'
     ShowRefillRequired = '0'
     BorderRadius = '0'
+    BorderRadiusRPM = '0'
 
     ActRpmType = 'not loaded'
     ActRpmTypeElements = ['not loaded']
@@ -4723,6 +4788,7 @@ class ConfigFile:
     ActBackgroundImageActive = False
     ActShowRefillRequired = False
     ActBorderRadius = 0
+    ActBorderRadiusRPM = 4
 
     ReadOk = False
     ReadResult = ''
@@ -5099,6 +5165,19 @@ class ConfigFile:
         except:
             self.ReadOk = False
             self.ReadResult = 'Error: Could not read BorderRadius.ini'
+
+        try:
+            self.file = open(ARIS_folder + '\\config\\design\\BorderRadiusRPM.ini', 'r')
+            self.BorderRadiusRPM = self.file.readline()
+            self.file.close()
+            self.ActBorderRadiusRPM = int(self.BorderRadiusRPM)
+            if ((self.ActBorderRadiusRPM < 0) or (self.ActBorderRadiusRPM > 20)):
+                self.ActBorderRadiusRPM = 4
+                self.ReadOk = False
+                self.ReadResult = 'Error: Value in BorderRadiusRPM.ini is out of range'
+        except:
+            self.ReadOk = False
+            self.ReadResult = 'Error: Could not read BorderRadiusRPM.ini'
         
         
         self.ActBgColor = {'Color':self.BgColor}
@@ -5201,6 +5280,13 @@ class ConfigFile:
             file.write(str(int(self.ActBorderRadius)))
             file.close()
             self.BorderRadius = str(self.ActBorderRadius)
+            save = 1
+        
+        if (float(self.BorderRadiusRPM) != self.ActBorderRadiusRPM):
+            file = open(ARIS_folder + '\\config\\design\\BorderRadiusRPM.ini', 'w')
+            file.write(str(int(self.ActBorderRadiusRPM)))
+            file.close()
+            self.BorderRadiusRPM = str(self.ActBorderRadiusRPM)
             save = 1
         
         if (float(self.LastLapTimeDisplayDuration) != self.ActLastLapTimeDisplayDuration):
